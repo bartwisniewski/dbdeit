@@ -2,11 +2,13 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from hashlib import md5
 from datetime import timedelta
 from .constants import DB_PATH
 
 db = SQLAlchemy()
+ma = Marshmallow()
 
 
 def create_app():
@@ -17,6 +19,7 @@ def create_app():
     app.secret_key = encryptor.digest()
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
     db.init_app(app)
+    ma.init_app(app)
 
     app.debug = True
 
