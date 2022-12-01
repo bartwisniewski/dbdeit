@@ -23,9 +23,8 @@ def create_app():
 
     app.debug = True
 
-    from .main import login_blueprint, dashboard_blueprint, logout_blueprint
-    app.register_blueprint(login_blueprint)
-    app.register_blueprint(dashboard_blueprint)
-    app.register_blueprint(logout_blueprint)
+    from .main import ListBlogEntryApiView, GetBlogEntryApiView
+    app.add_url_rule('/api/blog/', view_func=ListBlogEntryApiView.as_view(name="api-blog"))
+    app.add_url_rule('/api/blog/<int:id>', view_func=GetBlogEntryApiView.as_view(name="api-blog-id"))
 
-    return
+    return app

@@ -4,7 +4,6 @@ import os
 
 from app import create_app, db
 from app.constants import DB_PATH
-from app.models import Users
 
 
 def create_db(app):

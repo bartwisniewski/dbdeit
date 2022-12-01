@@ -1,4 +1,4 @@
-# File for your models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
+# File for your models
 
 from . import db
 
@@ -7,7 +7,7 @@ class Exercise(db.Model):
     _id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
     exercise_type = db.Column(db.Integer, default=9)
-    categories = db.Colum(db.String(255))
+    categories = db.Column(db.String(255))
     level = db.Column(db.String(50))
     words = db.relationship("ExerciseWord", backref='exercise', lazy=True)
     options = db.relationship("ExerciseOption", backref='exercise', lazy=True)
@@ -29,20 +29,20 @@ class Word(db.Model):
 
 class ExerciseWord(db.Model):
     _id = db.Column(db.Integer, primary_key=True)
-    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
-    word_id = db.Column(db.Integer, db.ForeignKey("word.id"), nullable=False)
+    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise._id"), nullable=False)
+    word_id = db.Column(db.Integer, db.ForeignKey("word._id"), nullable=False)
 
 
 class ExerciseOption(db.Model):
     _id = db.Column(db.Integer, primary_key=True)
-    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
+    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise._id"), nullable=False)
     name = db.Column(db.String(80))
     value = db.Column(db.Integer, default=0)
 
 
 class ExerciseExtern(db.Model):
     _id = db.Column(db.Integer, primary_key=True)
-    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
+    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise._id"), nullable=False)
     code = db.Column(db.Text)
 
 
@@ -51,7 +51,7 @@ class BlogEntry(db.Model):
     title = db.Column(db.String(120))
     subtitle = db.Column(db.String(120))
     picture_path = db.Column(db.String(255))
-    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=True)
+    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise._id"), nullable=True)
     entry_text = db.Column(db.Text)
     author = db.Column(db.String(80))
     created = db.Column(db.DateTime, server_default=db.func.now())

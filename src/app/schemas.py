@@ -20,6 +20,12 @@ class WordSchema(ma.Schema):
     variant = fields.fields.Str()
 
 
+class ExerciseWordSchema(ma.Schema):
+    _id = fields.fields.Integer()
+    exercise = fields.fields.Nested(ExerciseSchema())
+    word = fields.fields.Nested(WordSchema())
+
+
 class ExerciseExternSchema(ma.Schema):
     _id = fields.fields.Integer()
     code = fields.fields.Str()
@@ -37,9 +43,9 @@ class ExerciseCompleteSchema(ma.Schema):
     exercise_type = fields.fields.Integer()
     categories = fields.fields.Str()
     level = fields.fields.Str()
-    words = fields.fields.List(fields.fields.Nested(WordSchema()), required=False)
-    options = fields.fields.List(fields.fields.Nested(ExerciseOptionSchema()), required=False)
-    extern = fields.fields.Nested(ExerciseExternSchema(), required=False)
+    words = fields.fields.List(fields.fields.Nested(ExerciseWordSchema(exclude=("_id", "exercise",))), required=False)
+    options = fields.fields.List(fields.fields.Nested(ExerciseOptionSchema(exclude=("_id",))), required=False)
+    externs = fields.fields.List(fields.fields.Nested(ExerciseExternSchema(exclude=("_id",)), required=False))
 
 
 class BlogEntrySchema(ma.Schema):
