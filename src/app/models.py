@@ -17,6 +17,18 @@ class Exercise(db.Model):
     def __init__(self, title, exercise_type, categories, level):
         self.title, self.exercise_type, self.categories, self.level = title, exercise_type, categories, level
 
+    def get_id(self):
+        return self._id
+
+    @staticmethod
+    def query_exercises_ids(query):
+        exercises_queryset = Exercise.query.filter((Exercise.title.contains(query))
+                                                        | (Exercise.categories.contains(query))
+                                                        | (Exercise.level.contains(query)))
+        exercises = db.session.scalars(exercises_queryset).all()
+        exercises_ids = [exercise.get_id() for exercise in exercises]
+        return exercises_ids
+
 
 class Word(db.Model):
     _id = db.Column(db.Integer, primary_key=True)
@@ -56,3 +68,18 @@ class BlogEntry(db.Model):
     author = db.Column(db.String(80))
     created = db.Column(db.DateTime, server_default=db.func.now())
     updated = db.Column(db.DateTime, onupdate=db.func.now())
+
+    def get_id(self):
+        return self._id
+
+    @staticmethod
+    def query_entries(query):
+        if query and len(query) >= 2:
+            exercises_ids = Exercise.query_exercises_ids(query)
+            queryset = BlogEntry.query.filter((BlogEntry.title.contains(query))
+                                       | (BlogEntry.subtitle.contains(query))
+                                       | (BlogEntry.entry_text.contains(query))
+                                       | (BlogEntry.exercise_id.in_(exercises_ids)))
+        else:
+            queryset = BlogEntry.query
+        return queryset.order_by(BlogEntry._id.desc())
