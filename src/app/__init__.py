@@ -3,9 +3,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from flask_cors import CORS
 from hashlib import md5
 from datetime import timedelta
-from .constants import DB_PATH
+from .constants import DB_TEST, DB_PROD
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -17,11 +18,13 @@ def create_app():
 
     app.permanent_session_lifetime = timedelta(minutes=30)
     app.secret_key = encryptor.digest()
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = DB_TEST
     db.init_app(app)
     ma.init_app(app)
 
     app.debug = True
+
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     from .main import ListBlogEntryApiView, GetBlogEntryApiView
     app.add_url_rule('/api/blog/', view_func=ListBlogEntryApiView.as_view(name="api-blog"))
