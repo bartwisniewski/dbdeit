@@ -4,14 +4,15 @@ from flask import request
 from flask.views import MethodView
 
 from . import db
-from .models import BlogEntry
-from .schemas import BlogEntrySchema, BlogEntryWithExerciseSchema
+from .models import BlogEntry, Exercise
+from .schemas import BlogEntrySchema, BlogEntryWithExerciseSchema, ExerciseCompleteSchema
 from .pagination import Pagination
 
 PAGE_SIZE = 10
 
 entry_pagination = Pagination(nested_schema=BlogEntrySchema, limit=PAGE_SIZE)
 entry_schema = BlogEntryWithExerciseSchema()
+exercise_schema = ExerciseCompleteSchema()
 
 
 class ListBlogEntryApiView(MethodView):
@@ -40,5 +41,11 @@ class GetBlogEntryApiView(MethodView):
 
     def get(self, id: int) -> str:
         found_entry = db.session.scalars(db.select(BlogEntry).filter_by(_id=id)).first()
-        json = entry_schema.jsonify(found_entry)
         return entry_schema.jsonify(found_entry)
+
+
+class GetExerciseApiView(MethodView):
+
+    def get(self, id: int) -> str:
+        found_exercise = db.session.scalars(db.select(Exercise).filter_by(_id=id)).first()
+        return exercise_schema.jsonify(found_exercise)

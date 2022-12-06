@@ -11,6 +11,7 @@ class Exercise(db.Model):
     level = db.Column(db.String(50))
     words = db.relationship("ExerciseWord", backref='exercise', lazy=True)
     options = db.relationship("ExerciseOption", backref='exercise', lazy=True)
+    sentences = db.relationship("ExerciseSentence", backref='exercise', lazy=True)
     externs = db.relationship("ExerciseExtern", backref='exercise', lazy=True)
     entries = db.relationship("BlogEntry", backref='exercise', lazy=True)
 
@@ -50,6 +51,14 @@ class ExerciseOption(db.Model):
     exercise_id = db.Column(db.Integer, db.ForeignKey("exercise._id"), nullable=False)
     name = db.Column(db.String(80))
     value = db.Column(db.Integer, default=0)
+
+
+class ExerciseSentence(db.Model):
+    _id = db.Column(db.Integer, primary_key=True)
+    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise._id"), nullable=False)
+    sentence = db.Column(db.String(150))
+    mark = db.Column(db.Integer, default=0)
+    gap = db.Column(db.Integer, default=1)
 
 
 class ExerciseExtern(db.Model):
