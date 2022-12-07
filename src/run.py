@@ -3,7 +3,7 @@
 import os
 
 from app import create_app, db
-from app.constants import DB_PATH
+from app.settings import DB_PATH
 
 app = create_app()
 

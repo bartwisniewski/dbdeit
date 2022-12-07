@@ -23,3 +23,6 @@ htmlcov/
 .coverage
 .coverage.*
 *,cover
+
+# Serverside settings
+src/app/settings.py

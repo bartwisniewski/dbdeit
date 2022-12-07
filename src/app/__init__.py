@@ -6,7 +6,7 @@ from flask_marshmallow import Marshmallow
 from flask_cors import CORS
 from hashlib import md5
 from datetime import timedelta
-from .constants import DB_PATH
+from .settings import DB_PATH
 
 db = SQLAlchemy()
 ma = Marshmallow()
