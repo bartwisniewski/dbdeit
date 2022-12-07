@@ -11,7 +11,7 @@ from .pagination import Pagination
 PAGE_SIZE = 10
 
 entry_pagination = Pagination(nested_schema=BlogEntrySchema, limit=PAGE_SIZE)
-entry_schema = BlogEntryWithExerciseSchema()
+entry_schema = BlogEntrySchema()
 exercise_schema = ExerciseCompleteSchema()
 
 
